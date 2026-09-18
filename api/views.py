@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from django.contrib.auth import authenticate , login
+
 from .serializers import UserSerializer
 
 # Create your views here.
@@ -21,3 +23,29 @@ class ProfileView(APIView):
         #     "email":request.user.email
         # })
 
+class LoginView(APIView):
+
+    def post(self, request):
+
+        user = authenticate(
+            request,
+            username = request.data.get("username"),
+            password = request.data.get("password") 
+        )
+
+        if user:
+            login(request , user)
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+
+
+class LogoutView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "message":"You are logged out"
+        })
+
+    
