@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView, TokenVerifyView )
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,4 +41,10 @@ urlpatterns = [
         TokenVerifyView.as_view(),
         name='token_verify'
     ),
+
+    path('api/', include('api.urls')),
+
+    path('api-auth/' , include('rest_framework.urls'))
+    # api-auth/login/ 
+    # api-auth/logout/
 ]
