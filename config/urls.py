@@ -22,6 +22,11 @@ from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('student.urls')),
+    path('api/', include('api.urls')),
+    path('api-auth/' , include('rest_framework.urls')),
+    # api-auth/login/ 
+    # api-auth/logout/
 
     # JWT
     path(
@@ -42,9 +47,5 @@ urlpatterns = [
         name='token_verify'
     ),
 
-    path('api/', include('api.urls')),
-
-    path('api-auth/' , include('rest_framework.urls'))
-    # api-auth/login/ 
-    # api-auth/logout/
+  
 ]
