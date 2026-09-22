@@ -4,11 +4,13 @@ from datetime import datetime , timezone
 
 from .context import get_request_id
 
+# Build a set of standard LogRecord attribute names. Add the extra keys
+# "message" and "asctime" which are not present on the LogRecord instance but
+# are used by the formatter.
+_STANDARD_ATTRS = set(logging.LogRecord("", 0, "", 0, "", (), None).__dict__) | {"message", "asctime"}
 
-_STANDARD_ATTRS = set(logging.LogRecord("", 0, "", 0, "", (), None).__dict__) | {"message":"asctime"}
 
-
-class RequestIdFilter(logging.filter):
+class RequestIDFilter(logging.Filter):
 
     def filter ( self, record: logging.LogRecord) -> bool :
         record._request_id = get_request_id()
