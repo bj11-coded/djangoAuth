@@ -46,8 +46,36 @@ INSTALLED_APPS = [
     "api",
     'student',
     'core',
-    'django_filters'
+    'django_filters',
+    "storages"
 ]
+
+# r2 Config
+import environ
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env(BASE_DIR / '.env')
+
+AWS_ACCESS_KEY_ID = env("R2_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("R2_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("R2_BUCKET_NAME")
+AWS_S3_ENDPOINT_URL=env("R2_ENDPOINT_URL")
+
+AWS_S3_REGION_NAME = "auto"          # R2 doesn't use AWS regions, "auto" works
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_ADDRESSING_STYLE = "virtual"  # or "path" — virtual is R2's recommended style
+AWS_S3_FILE_OVERWRITE = False        # don't silently overwrite same-named files
+AWS_DEFAULT_ACL = None               # R2 ignores ACLs; leave unset
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+
 
 MIDDLEWARE = [
     'core.middleware.RequestIDMiddleware',
@@ -140,6 +168,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Media files (user‑uploaded content such as profile images)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Email
