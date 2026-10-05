@@ -19,6 +19,12 @@ from django.urls import path
 
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView, TokenVerifyView )
 from django.urls import include
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +33,12 @@ urlpatterns = [
     path('api-auth/' , include('rest_framework.urls')),
     # api-auth/login/ 
     # api-auth/logout/
+
+# swagger UI
+    path('api-docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='Swagger-UI'),
+
+# schema
+    path('api-schema/', SpectacularAPIView.as_view(), name='schema'),
 
     # JWT
     path(

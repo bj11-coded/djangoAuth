@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # third_Party libraries
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
+    'drf_spectacular',
 
     # local apps
     "api",
@@ -192,6 +193,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+}
+
+SPECTACULAR_SETTINGS ={
+    "Title": "My API",
+    "Description": "API documentation for my project",
+    "Version": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 from  datetime import timedelta
@@ -202,3 +213,7 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False
 }
+
+
+
+
