@@ -77,7 +77,6 @@ STORAGES = {
 }
 
 
-
 MIDDLEWARE = [
     'core.middleware.RequestIDMiddleware',
     'core.middleware.AccessLogMiddleware',
