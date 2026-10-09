@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!uyehj5w_a(e(b2qeso@31y-ggqvyku)w12#11yy1f4t2+cvb='
+SECRET_KEY = config('SECRET_KEY', default="ajsndfki3123n34mnasdfmn")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = config('DEBUG', default=True, cast=bool)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost, 127.0.0.1")
+cast = lambda v: [s.strip() for s in v.split(',')]
 
 # Application definition
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',
+    'corsheaders'
 
     # local apps
     "api",
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'core',
     'django_filters',
     "storages"
+    'books'
+    'authors'
 ]
 
 # r2 Config
@@ -90,6 +93,22 @@ MIDDLEWARE = [
 ]
 
 REQUEST_ID_HEADER = 'X-Request-ID'
+
+# PostgreSQL Database Configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='django_api'),
+        'USER': config('DB_USER', default='django_user'),
+        'PASSWORD': config('DB_PASSWORD', default='secure_password'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
+        'CONN_MAX_AGE': 600,
+        'OPTIONS': {
+            'sslmode': 'disable',
+        }
+    }
+}
 
 # settings.py
 LOGGING = {
@@ -213,6 +232,12 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": False
 }
 
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 
 
